@@ -18,10 +18,11 @@ app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 
 // CORS configuration
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://web-link-creator.vercel.app'],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
-  optionsSuccessStatus: 204
+  optionsSuccessStatus: 200
 };
 
 // Apply CORS middleware
