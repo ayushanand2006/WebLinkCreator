@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Zap, Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
-import { websiteData } from '../../mainServer.js';
+import websiteData from '../../mainServer.json';
 
 const Footer = () => {
   const socialIcons = {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Globe, Code, Palette, Image, ArrowRight, Check, Clock, DollarSign } from 'lucide-react';
-import { websiteData } from '../../mainServer.js';
+import websiteData from '../../mainServer.json';
 
 const Services = () => {
   const [selectedService, setSelectedService] = useState(null);

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Zap } from 'lucide-react';
-import { websiteData } from '../../mainServer.js';
+import websiteData from '../../mainServer.json';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);

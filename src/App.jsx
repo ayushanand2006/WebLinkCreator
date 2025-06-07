@@ -11,10 +11,12 @@ import Subscription from './pages/Subscription';
 import Contact from './pages/Contact';
 import SubscriptionDetail from './pages/SubscriptionDetail';
 import AdminPanel from './pages/AdminPanel';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
     <Router>
+      <ScrollToTop />
       <div className="min-h-screen bg-gray-50">
         <Navbar />
         <AnimatePresence mode="wait">

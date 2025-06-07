@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, Facebook, Twitter, Linkedin, Instagram } from 'lucide-react';
-import { websiteData } from '../../mainServer.js';
+import websiteData from '../../mainServer.json';
 
 const Contact = () => {
   const [formData, setFormData] = useState({

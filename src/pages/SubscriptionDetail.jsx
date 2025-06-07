@@ -1,8 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Check, Star, Calendar, DollarSign, Users, Award, X } from 'lucide-react';
-import { websiteData, addOrder } from '../../mainServer.js';
+import websiteData from '../../mainServer.json';
+import { ArrowRight } from 'lucide-react';
+import { addOrder } from '../api/dataManager';
+
+const countryCodes = [
+  { code: '+1', name: 'United States' },
+  { code: '+44', name: 'United Kingdom' },
+  { code: '+91', name: 'India' },
+  { code: '+61', name: 'Australia' },
+  { code: '+49', name: 'Germany' },
+  { code: '+33', name: 'France' },
+  { code: '+81', name: 'Japan' },
+  { code: '+86', name: 'China' },
+  { code: '+27', name: 'South Africa' },
+  { code: '+55', name: 'Brazil' },
+  { code: '+20', name: 'Egypt' },
+  { code: '+971', name: 'United Arab Emirates' },
+  { code: '+7', name: 'Russia' },
+  { code: '+34', name: 'Spain' },
+  { code: '+39', name: 'Italy' },
+  { code: '+52', name: 'Mexico' },
+  { code: '+63', name: 'Philippines' },
+  { code: '+60', name: 'Malaysia' },
+  { code: '+62', name: 'Indonesia' },
+  { code: '+65', name: 'Singapore' },
+  { code: '+90', name: 'Turkey' },
+  { code: '+234', name: 'Nigeria' },
+];
 
 const SubscriptionDetail = () => {
   const { id } = useParams();
@@ -13,6 +40,7 @@ const SubscriptionDetail = () => {
     email: '',
     company: '',
     phone: '',
+    countryCode: '+1',
     message: ''
   });
 
@@ -34,34 +62,42 @@ const SubscriptionDetail = () => {
   }
 
   const handleInputChange = (e) => {
+    const { name, value } = e.target;
     setOrderForm(prev => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [name]: value
     }));
   };
 
   const handleOrderSubmit = (e) => {
     e.preventDefault();
-    if (orderForm.name && orderForm.email) {
-      addOrder({
+    if (plan && orderForm.name && orderForm.email && orderForm.phone && orderForm.countryCode) {
+      const newOrder = {
         planId: plan.id,
         planName: plan.name,
         planPrice: plan.price,
-        customerInfo: orderForm
-      });
-      
+        customerInfo: {
+          name: orderForm.name,
+          email: orderForm.email,
+          company: orderForm.company,
+          phone: `${orderForm.countryCode}${orderForm.phone}`,
+          message: orderForm.message
+        }
+      };
+      addOrder(newOrder);
+      alert('Order request submitted successfully!');
       setShowOrderModal(false);
       setOrderForm({
         name: '',
         email: '',
         company: '',
         phone: '',
+        countryCode: '+1',
         message: ''
       });
-      
-      // Show success message or redirect
-      alert('Order request submitted successfully! We will contact you soon.');
       navigate('/subscription');
+    } else {
+      alert('Please fill in all required fields (Name, Email, Phone).');
     }
   };
 
@@ -283,14 +319,29 @@ const SubscriptionDetail = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone (Optional)</label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={orderForm.phone}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                  />
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone *</label>
+                  <div className="flex space-x-2">
+                    <select
+                      name="countryCode"
+                      value={orderForm.countryCode}
+                      onChange={handleInputChange}
+                      className="flex-shrink-0 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    >
+                      {countryCodes.map(c => (
+                        <option key={c.code} value={c.code}>
+                          {c.code} ({c.name})
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={orderForm.phone}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      required
+                    />
+                  </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Message (Optional)</label>

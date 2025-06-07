@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, X } from 'lucide-react';
-import { websiteData } from '../../mainServer.js';
+import websiteData from '../../mainServer.json';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 

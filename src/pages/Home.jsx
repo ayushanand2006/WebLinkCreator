@@ -1,10 +1,54 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Users, Award, Zap } from 'lucide-react';
-import { websiteData } from '../../mainServer.js';
+import { fetchData } from '../api/dataManager';
 
 const Home = () => {
+  const [websiteData, setWebsiteData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const loadWebsiteData = async () => {
+      try {
+        const data = await fetchData();
+        if (data) {
+          setWebsiteData(data);
+        } else {
+          setError('Failed to load website data.');
+        }
+      } catch (err) {
+        console.error('Error loading website data:', err);
+        setError('Error loading website data. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadWebsiteData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-lg text-gray-700">Loading website data...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-lg text-red-600">Error: {error}</p>
+      </div>
+    );
+  }
+
+  if (!websiteData) {
+    return null; // Or a placeholder if data is null after loading/error
+  }
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
